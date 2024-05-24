@@ -17,6 +17,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_24_024443) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["token"], name: "index_applications_on_token", unique: true
     t.index ["user_id"], name: "index_applications_on_user_id"
   end
 
@@ -25,6 +26,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_24_024443) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
   add_foreign_key "applications", "users"
