@@ -17,13 +17,12 @@ class ApplicationController < ActionController::API
   end
 
   def authenticate_user
-    token, _options = token_and_options(request)
-    if token.nil?
-      render status: :unauthorized and return
-    end
-    user_id = AuthTokenService.decode(token)
-    @current_user = User.find(user_id)
-    rescue ActiveRecord::RecordNotFound
+    begin
+      token, _options = token_and_options(request)
+      user_id = AuthTokenService.decode(token)
+      @current_user = User.find(user_id)
+    rescue
       render status: :unauthorized
+    end
   end
 end
