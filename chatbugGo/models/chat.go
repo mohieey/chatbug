@@ -1,6 +1,6 @@
 package models
 
 type Chat struct {
-	Number           int
-	ApplicationToken string
+	Number           int64  `json:"number"`
+	ApplicationToken string `json:"application_token"`
 }

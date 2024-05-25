@@ -2,6 +2,8 @@ package services
 
 import (
 	"chatbugGo/models"
+	"encoding/json"
+	"log"
 
 	workers "github.com/digitalocean/go-workers2"
 	"github.com/go-redis/redis"
@@ -14,9 +16,16 @@ type ChatService struct {
 
 func (c *ChatService) Create(applicationToken string) (*models.Chat, error) {
 	chat := models.Chat{
-		Number:           4,
+		Number:           c.RedisClient.Incr(applicationToken).Val(),
 		ApplicationToken: applicationToken,
 	}
+
+	chatJsonData, err := json.Marshal(chat)
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+	c.Producer.Enqueue(queueName, createChatJob, string(chatJsonData))
 
 	return &chat, nil
 }
