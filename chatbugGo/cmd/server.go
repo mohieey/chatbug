@@ -43,9 +43,18 @@ func main() {
 		RedisClient: rdb,
 	}
 
+	messageService := services.MeesageService{
+		Producer:    producer,
+		RedisClient: rdb,
+	}
+
 	// Setup controllers
 	chatsController := controllers.Chats{
 		ChatService: &chatService,
+	}
+
+	messagesController := controllers.Messages{
+		MessageService: &messageService,
 	}
 
 	// Setup routes
@@ -56,7 +65,11 @@ func main() {
 	r.Group(func(r chi.Router) {
 		r.Route("/applications/{application_token}", func(r chi.Router) {
 			r.Route("/chats", func(r chi.Router) {
-				r.Post("/create", chatsController.Create)
+				r.Post("/", chatsController.Create)
+
+				r.Route("/{chat_number}/messages", func(r chi.Router) {
+					r.Post("/", messagesController.Create)
+				})
 			})
 		})
 	})
