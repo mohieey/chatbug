@@ -17,7 +17,7 @@ func (m *Messages) Create(w http.ResponseWriter, r *http.Request) {
 	chatNumber := chi.URLParam(r, "chat_number")
 	text := r.FormValue("text")
 
-	message, err := m.MessageService.Create(text, chatNumber, applicationToken)
+	message, err := m.MessageService.Enqueue(text, chatNumber, applicationToken)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return

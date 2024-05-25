@@ -16,7 +16,7 @@ type MeesageService struct {
 	RedisClient *redis.Client
 }
 
-func (m *MeesageService) Create(text string, chatNumber string, applicationToken string) (*models.Message, error) {
+func (m *MeesageService) Enqueue(text string, chatNumber string, applicationToken string) (*models.Message, error) {
 	chatNumberInt64, err := strconv.ParseInt(chatNumber, 10, 64)
 	if err != nil {
 		log.Fatal(err)

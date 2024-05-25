@@ -14,7 +14,7 @@ type ChatService struct {
 	RedisClient *redis.Client
 }
 
-func (c *ChatService) Create(applicationToken string) (*models.Chat, error) {
+func (c *ChatService) Enqueue(applicationToken string) (*models.Chat, error) {
 	chat := models.Chat{
 		Number:           c.RedisClient.Incr(applicationToken).Val(),
 		ApplicationToken: applicationToken,
