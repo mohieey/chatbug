@@ -14,8 +14,9 @@ type Chats struct {
 
 func (c *Chats) Create(w http.ResponseWriter, r *http.Request) {
 	applicationToken := chi.URLParam(r, "application_token")
+	chatName := r.FormValue("name")
 
-	chat, err := c.ChatService.Enqueue(applicationToken)
+	chat, err := c.ChatService.Enqueue(applicationToken, chatName)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
