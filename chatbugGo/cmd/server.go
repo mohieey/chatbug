@@ -1,46 +1,47 @@
 package main
 
 import (
+	"chatbugGo/configs"
 	"chatbugGo/controllers"
 	"chatbugGo/middlewares"
 	"chatbugGo/services"
 	"fmt"
 	"net/http"
-	"os"
 
+	workers "github.com/digitalocean/go-workers2"
 	"github.com/go-chi/chi/v5"
-	"github.com/lpernett/godotenv"
+	"github.com/go-redis/redis"
 )
 
-type config struct {
-	Server struct {
-		Host string
-		Port string
-	}
-}
-
-func loadEnvConfig() (*config, error) {
-	err := godotenv.Load()
-	if err != nil {
-		return nil, fmt.Errorf("error loading environment configuration file: %v", err)
-	}
-
-	var config config
-
-	config.Server.Host = os.Getenv("HOST")
-	config.Server.Port = os.Getenv("PORT")
-
-	return &config, nil
-}
-
 func main() {
-	cfg, err := loadEnvConfig()
+	cfg, err := configs.LoadEnvConfig()
 	if err != nil {
 		panic(err)
 	}
 
+	// Setup sidekiq producer
+	producer, err := workers.NewProducer(workers.Options{
+		ServerAddr: cfg.SidekiqProducer.ServerAddr,
+		Database:   cfg.SidekiqProducer.Database,
+		PoolSize:   cfg.SidekiqProducer.PoolSize,
+		ProcessID:  cfg.SidekiqProducer.ProcessId,
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	// Setup Redis client
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     cfg.Redis.Addr,
+		Password: cfg.Redis.Password,
+		DB:       cfg.Redis.DB,
+	})
+
 	// Setup services
-	chatService := services.ChatService{}
+	chatService := services.ChatService{
+		Producer:    producer,
+		RedisClient: rdb,
+	}
 
 	// Setup controllers
 	chatsController := controllers.Chats{
