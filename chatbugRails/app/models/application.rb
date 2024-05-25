@@ -1,5 +1,6 @@
 class Application < ApplicationRecord
   belongs_to :user
+  has_many :chats
 
   validates :name, presence: true, length: { minimum: 3 }
   validates :token, presence: true, uniqueness: true, length: { is: 16 }
