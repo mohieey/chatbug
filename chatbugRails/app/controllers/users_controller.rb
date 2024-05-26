@@ -3,9 +3,9 @@ class UsersController < ApplicationController
 
   def sign_up
     user = User.new(user_params)
-    token = AuthTokenService.encode(user.id)
 
     if user.save
+      token = AuthTokenService.encode(user.id)
       render json: decorate(user, token), status: :created
     else
       render json: user.errors, status: :unprocessable_entity

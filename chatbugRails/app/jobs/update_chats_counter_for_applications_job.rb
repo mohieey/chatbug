@@ -15,6 +15,9 @@ class UpdateChatsCounterForApplicationsJob < ApplicationJob
       batch_update_query = batch_update_query + "UPDATE applications SET chats_counter = #{chats_counter} WHERE token = '#{token}';"
     end
 
-    ActiveRecord::Base.connection.execute(batch_update_query)
+    if !batch_update_query.empty?
+        puts "EXCUTING CHATS_COUNTER UPDATE"
+        ActiveRecord::Base.connection.execute(batch_update_query)
+    end
   end
 end
