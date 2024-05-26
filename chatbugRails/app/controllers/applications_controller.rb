@@ -21,6 +21,8 @@ class ApplicationsController < ApplicationController
     end
   end
 
+  private
+
   def decorate(application)
     {
       application_name: application.name,

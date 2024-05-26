@@ -12,7 +12,14 @@ Rails.application.routes.draw do
   scope :applications do
     get :'', to: 'applications#index'
     post :create, to: 'applications#create'
+
+    scope '/:application_token' do
+      scope :chats do
+        get :'', to: 'chats#index'
+      end
+    end
   end
+
 
   # Defines the root path route ("/")
   # root "posts#index"

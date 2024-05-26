@@ -2,9 +2,11 @@ class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token
 
   class AuthenticaionError < StandardError; end
+  class NotFoundError < StandardError; end
 
   rescue_from ActionController::ParameterMissing, with: :parameter_missing
   rescue_from AuthenticaionError, with: :handle_unauthenticated
+  rescue_from NotFoundError, with: :handle_notfound
 
   private
 
@@ -14,6 +16,10 @@ class ApplicationController < ActionController::API
 
   def handle_unauthenticated
     head :unauthorized
+  end
+
+  def handle_notfound
+    head :not_found
   end
 
   def authenticate_user
