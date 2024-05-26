@@ -1,6 +1,15 @@
 class ApplicationsController < ApplicationController
   include ApplicationParams
-  before_action :authenticate_user, only: [:create]
+  before_action :authenticate_user, only: [:index, :create]
+
+  def index
+    applications = []
+    @current_user.applications.find_each do |application|
+      applications << decorate(application)
+    end
+
+    render json: applications, status: :ok
+  end
 
   def create
     application = Application.new(application_params.merge(user_id: @current_user.id))

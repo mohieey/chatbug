@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   end
 
   scope :applications do
+    get :'', to: 'applications#index'
     post :create, to: 'applications#create'
   end
 
