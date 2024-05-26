@@ -15,9 +15,9 @@ type Messages struct {
 func (m *Messages) Create(w http.ResponseWriter, r *http.Request) {
 	applicationToken := chi.URLParam(r, "application_token")
 	chatNumber := chi.URLParam(r, "chat_number")
-	text := r.FormValue("text")
+	body := r.FormValue("body")
 
-	message, err := m.MessageService.EnqueueCreate(text, chatNumber, applicationToken)
+	message, err := m.MessageService.EnqueueCreate(body, chatNumber, applicationToken)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
@@ -32,9 +32,9 @@ func (m *Messages) Update(w http.ResponseWriter, r *http.Request) {
 	applicationToken := chi.URLParam(r, "application_token")
 	chatNumber := chi.URLParam(r, "chat_number")
 	messageNumber := chi.URLParam(r, "message_number")
-	text := r.FormValue("text")
+	body := r.FormValue("body")
 
-	_, err := m.MessageService.EnqueueUpdate(text, messageNumber, chatNumber, applicationToken)
+	_, err := m.MessageService.EnqueueUpdate(body, messageNumber, chatNumber, applicationToken)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return

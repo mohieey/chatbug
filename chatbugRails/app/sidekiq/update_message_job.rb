@@ -3,7 +3,7 @@ class UpdateMessageJob
 
   def perform(args)
     message_args = JSON.parse(args)
-    text = message_args["text"]
+    body = message_args["body"]
     message_number = message_args["number"]
     chat_number = message_args["chat_number"]
     application_token = message_args["application_token"]
@@ -14,7 +14,7 @@ class UpdateMessageJob
       return
     end
 
-    message.text = text
+    message.body = body
     if message.save
       Rails.logger.info "UpdateMessageJob: updated message number: #{message_number} in chat number: #{chat_number} in application #{application_token}"
     else

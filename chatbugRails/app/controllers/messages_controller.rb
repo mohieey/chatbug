@@ -24,7 +24,7 @@ class MessagesController < ApplicationController
   def decorate(message)
     {
       number: message.number,
-      text: message.text,
+      body: message.body,
     }
   end
 end

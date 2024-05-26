@@ -16,7 +16,7 @@ type MeesageService struct {
 	RedisClient *redis.Client
 }
 
-func (m *MeesageService) EnqueueCreate(text string, chatNumber string, applicationToken string) (*models.Message, error) {
+func (m *MeesageService) EnqueueCreate(body string, chatNumber string, applicationToken string) (*models.Message, error) {
 	chatNumberInt64, err := strconv.ParseInt(chatNumber, 10, 64)
 	if err != nil {
 		log.Fatal(err)
@@ -25,7 +25,7 @@ func (m *MeesageService) EnqueueCreate(text string, chatNumber string, applicati
 
 	message := models.Message{
 		Number:           m.RedisClient.Incr(fmt.Sprintf("%v:%v", applicationToken, chatNumber)).Val(),
-		Text:             text,
+		Body:             body,
 		ChatNumber:       chatNumberInt64,
 		ApplicationToken: applicationToken,
 	}
@@ -40,7 +40,7 @@ func (m *MeesageService) EnqueueCreate(text string, chatNumber string, applicati
 	return &message, nil
 }
 
-func (m *MeesageService) EnqueueUpdate(text string, messageNumber string, chatNumber string, applicationToken string) (*models.Message, error) {
+func (m *MeesageService) EnqueueUpdate(body string, messageNumber string, chatNumber string, applicationToken string) (*models.Message, error) {
 	chatNumberInt64, err := strconv.ParseInt(chatNumber, 10, 64)
 	if err != nil {
 		log.Fatal(err)
@@ -55,7 +55,7 @@ func (m *MeesageService) EnqueueUpdate(text string, messageNumber string, chatNu
 
 	message := models.Message{
 		Number:           messageNumberInt64,
-		Text:             text,
+		Body:             body,
 		ChatNumber:       chatNumberInt64,
 		ApplicationToken: applicationToken,
 	}
