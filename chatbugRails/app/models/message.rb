@@ -1,4 +1,33 @@
 class Message < ApplicationRecord
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+
+  mappings do
+    indexes :body, type: 'text', analyzer: 'english'
+    indexes :chat_id, type: 'integer'
+  end
+
+  def self.search(query, chat_id)
+    params = {
+      query: {
+        bool: {
+          must: [
+            { match: { chat_id: chat_id } },
+            {
+              multi_match: {
+                query: query,
+                fields: ['body'],
+                fuzziness: "AUTO"
+              }
+            }
+          ]
+        }
+      }
+    }
+
+    self.__elasticsearch__.search(params).records.to_a
+  end
+
   belongs_to :chat
 
   validates :number, presence: true

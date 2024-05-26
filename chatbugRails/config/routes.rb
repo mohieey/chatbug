@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
       scope '/:chat_number/messages' do
         get :'', to: 'messages#index'
+        get :search, to: 'messages#search'
       end
     end
   end

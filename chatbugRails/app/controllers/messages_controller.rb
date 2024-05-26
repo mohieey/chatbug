@@ -18,6 +18,24 @@ class MessagesController < ApplicationController
     render json: messages, status: :ok
   end
 
+  def search
+    application_token = params[:application_token]
+    chat_number = params[:chat_number]
+    query = params[:q]
+
+    chat = Chat.find_by_application_token_and_chat_number(application_token, chat_number)
+    if chat.nil?
+      raise NotFoundError
+    end
+
+    messages = []
+    Message.search(query, chat.id).each do |message|
+      messages << decorate(message)
+    end
+
+    render json: messages, status: :ok
+  end
+
 
   private
 
