@@ -8,14 +8,7 @@ class CreateMessageJob
     chat_number = message_args["chat_number"]
     application_token = message_args["application_token"]
 
-
-    application = Application.find_by(token: application_token)
-    if application.nil?
-      Rails.logger.error "CreateMessageJob: application #{application_token} not found"
-      return
-    end
-
-    chat = application.chats.find_by(number: chat_number)
+    chat = Chat.find_by_application_token_and_chat_number(application_token, chat_number)
     if chat.nil?
       Rails.logger.error "CreateMessageJob: chat number: #{chat_number} in application #{application_token} not found"
       return

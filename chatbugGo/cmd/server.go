@@ -66,6 +66,7 @@ func main() {
 		r.Route("/applications/{application_token}", func(r chi.Router) {
 			r.Route("/chats", func(r chi.Router) {
 				r.Post("/", chatsController.Create)
+				r.Put("/{chat_number}", chatsController.Update)
 
 				r.Route("/{chat_number}/messages", func(r chi.Router) {
 					r.Post("/", messagesController.Create)
