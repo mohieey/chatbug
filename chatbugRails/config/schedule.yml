@@ -1,0 +1,3 @@
+update_chats_counter_for_applications_job:
+   cron: "*/10 * * * *"
+   class: "UpdateChatsCounterForApplicationsJob"

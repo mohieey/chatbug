@@ -2,6 +2,7 @@ package services
 
 import (
 	"chatbugGo/models"
+	"chatbugGo/scripts"
 	"encoding/json"
 	"log"
 	"strconv"
@@ -17,7 +18,7 @@ type ChatService struct {
 
 func (c *ChatService) EnqueueCreate(applicationToken, chatName string) (*models.Chat, error) {
 	chat := models.Chat{
-		Number:           c.RedisClient.Incr(applicationToken).Val(),
+		Number:           c.RedisClient.Eval(scripts.GetCounter, []string{applicationToken, applicationsToUpdateChatsCounter}).Val().(int64),
 		Name:             chatName,
 		ApplicationToken: applicationToken,
 	}
