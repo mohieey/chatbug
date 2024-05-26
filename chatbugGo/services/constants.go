@@ -5,4 +5,5 @@ const (
 	createChatJob    = "CreateChatJob"
 	updateChatJob    = "UpdateChatJob"
 	createMessageJob = "CreateMessageJob"
+	updateMessageJob = "UpdateMessageJob"
 )

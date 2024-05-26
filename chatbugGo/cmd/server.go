@@ -70,6 +70,7 @@ func main() {
 
 				r.Route("/{chat_number}/messages", func(r chi.Router) {
 					r.Post("/", messagesController.Create)
+					r.Put("/{message_number}", messagesController.Update)
 				})
 			})
 		})

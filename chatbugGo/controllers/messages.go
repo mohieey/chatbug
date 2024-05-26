@@ -17,7 +17,7 @@ func (m *Messages) Create(w http.ResponseWriter, r *http.Request) {
 	chatNumber := chi.URLParam(r, "chat_number")
 	text := r.FormValue("text")
 
-	message, err := m.MessageService.Enqueue(text, chatNumber, applicationToken)
+	message, err := m.MessageService.EnqueueCreate(text, chatNumber, applicationToken)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
@@ -26,4 +26,20 @@ func (m *Messages) Create(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(message)
+}
+
+func (m *Messages) Update(w http.ResponseWriter, r *http.Request) {
+	applicationToken := chi.URLParam(r, "application_token")
+	chatNumber := chi.URLParam(r, "chat_number")
+	messageNumber := chi.URLParam(r, "message_number")
+	text := r.FormValue("text")
+
+	_, err := m.MessageService.EnqueueUpdate(text, messageNumber, chatNumber, applicationToken)
+	if err != nil {
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusNoContent)
 }

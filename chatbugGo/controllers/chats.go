@@ -32,7 +32,7 @@ func (c *Chats) Update(w http.ResponseWriter, r *http.Request) {
 	chatNumber := chi.URLParam(r, "chat_number")
 	chatName := r.FormValue("name")
 
-	chat, err := c.ChatService.EnqueueUpdate(applicationToken, chatNumber, chatName)
+	_, err := c.ChatService.EnqueueUpdate(applicationToken, chatNumber, chatName)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
@@ -40,5 +40,4 @@ func (c *Chats) Update(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusNoContent)
-	json.NewEncoder(w).Encode(chat)
 }
