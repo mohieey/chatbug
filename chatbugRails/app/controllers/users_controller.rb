@@ -14,6 +14,9 @@ class UsersController < ApplicationController
 
   def sign_in
     user = User.find_by(username: user_params[:username])
+    if user.nil?
+      raise ActiveRecord::RecordNotFound
+    end
     raise AuthenticaionError unless user.authenticate(user_params[:password])
     token = AuthTokenService.encode(user.id)
 
