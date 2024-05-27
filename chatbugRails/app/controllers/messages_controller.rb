@@ -11,7 +11,7 @@ class MessagesController < ApplicationController
     end
 
     messages = []
-    chat.messages.find_each do |message|
+    chat.messages.limit(params[:limit]).offset(params[:offset]).each do |message|
       messages << decorate(message)
     end
 

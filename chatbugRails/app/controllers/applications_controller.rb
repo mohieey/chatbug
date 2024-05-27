@@ -4,7 +4,7 @@ class ApplicationsController < ApplicationController
 
   def index
     applications = []
-    @current_user.applications.find_each do |application|
+    @current_user.applications.limit(params[:limit]).offset(params[:offset]).each do |application|
       applications << decorate(application)
     end
 

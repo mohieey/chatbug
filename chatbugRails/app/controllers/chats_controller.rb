@@ -9,7 +9,7 @@ class ChatsController < ApplicationController
     end
 
     chats = []
-    application.chats.find_each do |chat|
+    application.chats.limit(params[:limit]).offset(params[:offset]).each do |chat|
       chats << decorate(chat)
     end
 
