@@ -11,7 +11,8 @@ Rails.application.routes.draw do
 
   scope :applications do
     get :'', to: 'applications#index'
-    post :create, to: 'applications#create'
+    post :'', to: 'applications#create'
+    put :'/:application_token', to: 'applications#update'
 
     scope '/:application_token/chats' do
       get :'', to: 'chats#index'

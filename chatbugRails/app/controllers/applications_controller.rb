@@ -22,6 +22,23 @@ class ApplicationsController < ApplicationController
     end
   end
 
+  def update
+    application_token = params[:application_token]
+    name = params[:name]
+
+    application = Application.find_by(token: application_token)
+    if application.nil?
+      raise NotFoundError
+    end
+
+    application.name = name
+    if application.save
+      render status: :no_content
+    else
+      render status: :unprocessable_entity
+    end
+  end
+
   private
 
   def decorate(application)
