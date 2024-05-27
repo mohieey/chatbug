@@ -15,6 +15,7 @@ class CreateChatJob
 
     chat = Chat.new(number: chat_number, name: chat_name,application: application)
     if chat.save
+      REDIS.hset(CHATS_TOKEN_AND_NUMBER_TO_CHATS_IDS_MAP_KEY, "#{application.token}:#{chat.number}", chat.id)
       Rails.logger.info "CreateChatJob: created chat number: #{chat_number} for application #{application_token}"
     else
       Rails.logger.error "CreateChatJob: error creating chat number: #{chat_number} for application #{application_token}"

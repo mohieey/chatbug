@@ -15,6 +15,7 @@ class ApplicationsController < ApplicationController
     application = Application.new(application_params.merge(user_id: @current_user.id))
 
     if application.save
+      REDIS.hset(APPS_TOKENS_TO_APPS_IDS_MAP_KEY, application.token, application.id)
       render json: decorate(application), status: :created
     else
       render json: application.errors, status: :bad_request
@@ -27,6 +28,7 @@ class ApplicationsController < ApplicationController
     {
       application_name: application.name,
       application_token: application.token,
+      chats_counter: application.chats_counter,
     }
   end
 end

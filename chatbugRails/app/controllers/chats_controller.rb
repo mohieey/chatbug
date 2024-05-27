@@ -23,6 +23,7 @@ class ChatsController < ApplicationController
     {
       number: chat.number,
       name: chat.name,
+      messages_counter: chat.messages_counter
     }
   end
 end

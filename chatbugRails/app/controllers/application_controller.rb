@@ -7,6 +7,7 @@ class ApplicationController < ActionController::API
   rescue_from ActionController::ParameterMissing, with: :parameter_missing
   rescue_from AuthenticaionError, with: :handle_unauthenticated
   rescue_from NotFoundError, with: :handle_notfound
+  rescue_from ActiveRecord::RecordNotFound, with: :handle_notfound
 
   private
 

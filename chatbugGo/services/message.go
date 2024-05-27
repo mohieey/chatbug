@@ -2,6 +2,7 @@ package services
 
 import (
 	"chatbugGo/models"
+	"chatbugGo/scripts"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -23,8 +24,9 @@ func (m *MeesageService) EnqueueCreate(body string, chatNumber string, applicati
 		return nil, err
 	}
 
+	counterKey := fmt.Sprintf("%v:%v", applicationToken, chatNumber)
 	message := models.Message{
-		Number:           m.RedisClient.Incr(fmt.Sprintf("%v:%v", applicationToken, chatNumber)).Val(),
+		Number:           m.RedisClient.Eval(scripts.GetCounter, []string{counterKey, chatsToUpdateMessagesCounter}).Val().(int64),
 		Body:             body,
 		ChatNumber:       chatNumberInt64,
 		ApplicationToken: applicationToken,

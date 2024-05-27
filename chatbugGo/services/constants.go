@@ -7,4 +7,5 @@ const (
 	createMessageJob                 = "CreateMessageJob"
 	updateMessageJob                 = "UpdateMessageJob"
 	applicationsToUpdateChatsCounter = "applications_to_update_chats_counter"
+	chatsToUpdateMessagesCounter     = "chats_to_update_messages_counter"
 )
